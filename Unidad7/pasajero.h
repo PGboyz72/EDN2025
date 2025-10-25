@@ -29,6 +29,7 @@ extern int abordaje_iniciado;
 
 const char* genero_a_cadena(Genero g);
 void liberar_lista(Pasajero **cabeza);
+
 void establecer_capacidad();
 void vender_tiquete();
 void iniciar_abordaje();

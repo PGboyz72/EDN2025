@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "pasajero.h"
 
 Pasajero *cabeza_vendidos = NULL;
@@ -37,9 +39,9 @@ void establecer_capacidad() {
     }
 
     int cap;
-    printf("\nIngrese la capacidad máxima de pasajeros del avión: ");
+    printf("\nIngrese la capacidad maxima de pasajeros del avion: ");
     if (scanf("%d", &cap) != 1 || cap <= 0) {
-        printf("Entrada inválida. La capacidad debe ser un número entero positivo.\n");
+        printf("Entrada invalida. La capacidad debe ser un numero entero positivo.\n");
         while (getchar() != '\n');
         return;
     }
@@ -48,39 +50,34 @@ void establecer_capacidad() {
     capacidad_maxima = cap;
     limite_sobreventa = capacidad_maxima + (capacidad_maxima / 10);
     printf("Capacidad establecida: %d pasajeros.\n", capacidad_maxima);
-    printf("Límite de venta por sobreventa (10%%): %d tiquetes.\n", limite_sobreventa);
+    printf("Limite de venta por sobreventa (10%%): %d tiquetes.\n", limite_sobreventa);
 }
 
 void vender_tiquete() {
     if (capacidad_maxima == 0) {
-        printf("\nDebe establecer primero la capacidad del avión (Opción 1).\n");
+        printf("\nDebe establecer primero la capacidad del avion (Opcion 1).\n");
         return;
     }
     if (abordaje_iniciado) {
-        printf("\nEl proceso de abordaje ya ha iniciado. No se pueden vender más tiquetes.\n");
+        printf("\nEl proceso de abordaje ya ha iniciado. No se pueden vender mas tiquetes.\n");
         return;
     }
     if (tiquetes_vendidos >= limite_sobreventa) {
-        printf("\nLímite de sobreventa (%d) alcanzado! No se pueden vender más tiquetes.\n", limite_sobreventa);
+        printf("\nLimite de sobreventa alcanzado! No se pueden vender mas tiquetes.\n");
         return;
     }
 
     Pasajero *nuevo_pasajero = (Pasajero *)malloc(sizeof(Pasajero));
     if (nuevo_pasajero == NULL) {
-        perror("Error de asignación de memoria");
+        perror("Error de asignacion de memoria");
         return;
     }
 
     int opcion_genero;
-    printf("\n--- Venta de Tiquete #%d ---\n", tiquetes_vendidos + 1);
-
-    printf("Seleccione Género:\n");
-    printf("  1. Femenino\n");
-    printf("  2. Masculino\n");
-    printf("  3. No Binario\n");
-    printf("Opción: ");
+    printf("\nVenta de Tiquete #%d\n", tiquetes_vendidos + 1);
+    printf("Seleccione Genero:\n  1. Femenino\n  2. Masculino\n  3. No Binario\nOpcion: ");
     if (scanf("%d", &opcion_genero) != 1 || opcion_genero < 1 || opcion_genero > 3) {
-        printf("Opción de género inválida. Venta cancelada.\n");
+        printf("Opción invalida. Venta cancelada.\n");
         free(nuevo_pasajero);
         while (getchar() != '\n');
         return;
@@ -113,18 +110,17 @@ void vender_tiquete() {
     }
 
     tiquetes_vendidos++;
-    printf("Tiquete vendido con éxito a %s (%s). Tiquetes totales: %d.\n",
+    printf("Tiquete vendido con exito a %s (%s). Tiquetes totales: %d.\n",
            nuevo_pasajero->primer_apellido, genero_a_cadena(nuevo_pasajero->genero), tiquetes_vendidos);
 }
 
-
 void iniciar_abordaje() {
-if (capacidad_maxima == 0) {
-        printf("\nDebe establecer primero la capacidad del avión (Opción 1).\n");
+    if (capacidad_maxima == 0) {
+        printf("\nDebe establecer primero la capacidad del avion.\n");
         return;
     }
     if (abordaje_iniciado) {
-        printf("\nEl proceso de abordaje ya había finalizado.\n");
+        printf("\nEl proceso de abordaje ya habia finalizado.\n");
         return;
     }
     if (cabeza_vendidos == NULL) {
@@ -135,46 +131,28 @@ if (capacidad_maxima == 0) {
     abordaje_iniciado = 1;
     int abordados_count = 0;
     Pasajero *actual;
-    Pasajero *temp;
 
-    printf("\n--- INICIANDO PROCESO DE ABORDAJE ---\n");
-    printf("Capacidad máxima del avión: %d pasajeros.\n", capacidad_maxima);
+    printf("\nINICIANDO ABORDAJE\n");
 
     while (cabeza_vendidos != NULL && abordados_count < capacidad_maxima) {
         actual = cabeza_vendidos;
         cabeza_vendidos = cabeza_vendidos->siguiente;
-        
-        actual->siguiente = NULL;
 
         actual->siguiente = abordados;
         abordados = actual;
-        
+
         printf("Abordado #%d: %s\n", abordados_count + 1, actual->primer_apellido);
         abordados_count++;
     }
-
-    Pasajero *prev = NULL;
-    Pasajero *curr = abordados;
-    Pasajero *next = NULL;
-    while (curr != NULL) {
-        next = curr->siguiente;
-        curr->siguiente = prev;
-        prev = curr;
-        curr = next;
-    }
-    abordados = prev;
-
-    printf("\n--- ABORDAJE COMPLETADO ---\n");
-    printf("Total de pasajeros que lograron abordar: %d.\n", abordados_count);
 
     if (cabeza_vendidos != NULL) {
         no_abordados = cabeza_vendidos;
         cabeza_vendidos = NULL;
         cola_vendidos = NULL;
-        printf(" %d tiquetes vendidos quedaron sin abordar debido a la capacidad máxima.\n", tiquetes_vendidos - abordados_count);
-    } else {
-        no_abordados = NULL;
+        printf("%d pasajeros no abordaron (sobreventa).\n", tiquetes_vendidos - abordados_count);
     }
+
+    printf("\nABORDAJE COMPLETADO\n");
 }
 
 void mostrar_lista(Pasajero *cabeza, const char *titulo) {
@@ -187,26 +165,24 @@ void mostrar_lista(Pasajero *cabeza, const char *titulo) {
     Pasajero *actual = cabeza;
     int contador = 1;
     while (actual != NULL) {
-        printf("  %d. Apellido: %-15s | Género: %s\n",
-               contador++,
-               actual->primer_apellido,
-               genero_a_cadena(actual->genero));
+        printf("  %d. Apellido: %-15s | Genero: %s\n",
+               contador++, actual->primer_apellido, genero_a_cadena(actual->genero));
         actual = actual->siguiente;
     }
 }
 
 void ver_abordados() {
     if (!abordaje_iniciado) {
-        printf("\nEl proceso de abordaje aún no ha iniciado (Opción 3).\n");
+        printf("\nEl abordaje aún no ha iniciado.\n");
         return;
     }
-    mostrar_lista(abordados, "LISTA DE PASAJEROS ABORDADOS");
+    mostrar_lista(abordados, "LISTA DE ABORDADOS");
 }
 
 void ver_no_abordados() {
     if (!abordaje_iniciado) {
-        printf("\nEl proceso de abordaje aún no ha iniciado (Opción 3).\n");
+        printf("\nEl abordaje aun no ha iniciado.\n");
         return;
     }
-    mostrar_lista(no_abordados, "LISTA DE PASAJEROS NO ABORDADOS (OVERBOOKING)");
+    mostrar_lista(no_abordados, "LISTA DE NO ABORDADOS (SOBREVENTA)");
 }
