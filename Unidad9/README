@@ -1,0 +1,30 @@
+# Unidad 9 - Árboles Binarios de Búsqueda (ABB)
+
+Este proyecto implementa la estructura de datos **Árbol Binario de Búsqueda (ABB)**, permitiendo la manipulación eficiente de datos jerárquicos y ordenados
+
+---
+
+## Curso
+
+ESTRUCTURA DE DATOS
+
+---
+
+## Integrantes
+
+- ANDRICK ALAIN PRECIADO GONZALEZ
+
+## Comentarios
+
+[cite_start]El programa utiliza un **menú interactivo** en la terminal para registrar y manipular el árbol, implementando la lógica de ABB tal cual se describe en la Unidad 9 del material.Incluye manejo de memoria (`liberarArbol`) para limpiar el árbol al salir.
+
+---
+
+## Ejemplo de Interacción (Salida de Consola)
+
+El programa se ejecuta a través de un menú. Un ejemplo de interacción (registrando y mostrando) es el siguiente:
+MENU PRINCIPAL
+Registrar Nodo
+Mostrar Nodos
+Eliminar Nodo
+Salir Digite la opcion: 1 Digite el valor del nodo: 6 Nuevo nodo (6) registrado.
