@@ -1,0 +1,68 @@
+# Unidad 11 - Sistema Logístico Híbrido (AVL y Colas FIFO)
+
+Este proyecto implementa un sistema logístico crucial para la gestión de alimentos perecederos, utilizando una **Estructura de Datos Híbrida** compuesta por un **Árbol Binario de Búsqueda Balanceado (AVL)** y **Colas FIFO**.
+
+El objetivo principal es priorizar el despacho de alimentos según su fecha de caducidad, evitando pérdidas por vencimiento.
+
+---
+
+## Curso
+
+ESTRUCTURA DE DATOS
+
+---
+
+## Integrante
+
+- ANDRICK ALAIN PRECIADO GONZALEZ
+
+## Estructuras de Datos Requeridas
+
+El sistema gestiona la memoria de la siguiente manera:
+
+### Árbol ABB con Balanceo AVL (Calendario de Vencimientos)
+
+* **Función:** Organiza los lotes de inventario por fecha de vencimiento.
+* **Clave (ID):** Fecha de vencimiento en formato numérico entero `AAAAMMDD` (Año-Mes-Día).
+* **Lógica:** Los lotes con fechas más antiguas/próximas a vencer van a la izquierda (prioritarios).
+* **Balanceo:** La implementación garantiza que el árbol se mantenga balanceado tras inserciones y eliminaciones (Implementación Correcta del AVL).
+
+### Cola FIFO (Lista de Espera de Envíos)
+
+* **Función:** Cada nodo del árbol (lote) tiene adjunta una cola. Esta cola registra los pedidos de despacho para ese lote específico.
+* **Lógica:** Se usa una estructura FIFO (First In, First Out), donde el primer pedido en entrar es el primero que se atiende.
+
+---
+
+## Reglas del Negocio (Requerimientos Funcionales)
+
+El programa implementa las siguientes operaciones obligatorias:
+
+1.  **Recepción de Mercancía (Inserción en AVL):**
+    * Ingresa un nuevo lote por fecha. Si la fecha ya existe, el producto no se procesa.
+    * Si no existe, se crea el nodo y se balancea el árbol AVL.
+2.  **Registrar Pedido de Despacho (Encolar en FIFO):**
+    * Busca el nodo (lote) con la **fecha más cercana a vencer**.
+    * Agrega el pedido al final de la cola FIFO de ese nodo y se descuenta el stock.
+3.  **Cancelación (Eliminaciones):**
+    * **Baja de Producto/Lote:** Elimina el nodo completo del árbol y se debe balancear.
+    * **Cancelar Pedido:** Busca un pedido específico dentro de la cola del lote y lo elimina, restableciendo el stock al lote.
+4.  **Reporte de Estado (Recorrido In-Order):**
+    * Muestra un listado ordenado de los lotes **desde la fecha más próxima a vencer hasta la más lejana**.
+
+---
+
+## Comentarios
+
+El programa utiliza un **menú interactivo** en la terminal para registrar y manipular el árbol, implementando la lógica híbrida AVL + FIFO tal cual se describe en la documentación del proyecto. Incluye manejo de memoria estricto (`liberarArbol` y `liberarColaPedidos`) para garantizar **Cero Fugas de Memoria** al eliminar nodos o al salir del programa.
+
+---
+
+## Ejemplo de Interacción (Salida de Consola)
+
+El programa se ejecuta a través de un menú. Un ejemplo de interacción (compilación y menú principal) es el siguiente:
+
+### Compilación (Usando GCC en Windows/Linux):
+```bash
+# Asumiendo que el archivo se llama sistema_logistico_ascii.c y estamos en la carpeta correcta
+gcc sistema_logistico_ascii.c -o logistica
